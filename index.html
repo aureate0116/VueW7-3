@@ -5,11 +5,32 @@
     <link rel="icon" href="/VueW7-3/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vite App</title>
-    <script type="module" crossorigin src="/VueW7-3/assets/index-35b29379.js"></script>
-    <link rel="stylesheet" href="/VueW7-3/assets/index-81e4655a.css">
+    <script type="module" crossorigin src="/VueW7-3/assets/index-1306b3b3.js"></script>
+    <link rel="stylesheet" href="/VueW7-3/assets/index-c10fda05.css">
   </head>
   <body>
     <div id="app"></div>
     
+    <script src="https://unpkg.com/vee-validate@next"></script>
+    <script src="https://unpkg.com/@vee-validate/i18n@4.1.0"></script>
+    <script src="https://unpkg.com/@vee-validate/rules"></script>
+    <script>
+      Object.keys(VeeValidateRules).forEach(rule => {
+      if (rule !== 'default') {
+        VeeValidate.defineRule(rule, VeeValidateRules[rule]);
+      }
+    });
+
+    // 讀取外部的資源
+    VeeValidateI18n.loadLocaleFromURL('./zh_TW.json');
+
+    // Activate the locale
+    VeeValidate.configure({
+      generateMessage: VeeValidateI18n.localize('zh_TW'),
+      validateOnInput: true, // 調整為：輸入文字時，就立即進行驗證
+    });
+    </script>
+    
   </body>
 </html>
+
