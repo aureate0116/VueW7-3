@@ -11,5 +11,5 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
-  base: "/VueW7-3",
+  base: "/VueW7",
 });
