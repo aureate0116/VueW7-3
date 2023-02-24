@@ -118,13 +118,6 @@
                   <img class="img-fluid" :src="image" />
                 </div>
 
-                <!-- <div v-if="!tempProduct.imagesUrl.length || tempProduct.imagesUrl[tempProduct.imagesUrl.length - 1]">
-                      <button class="btn btn-outline-primary btn-sm d-block w-100"
-                        @click="tempProduct.imagesUrl.push('')">
-                        新增圖片
-                      </button>
-                    </div> -->
-
                 <div v-if="tempProduct.imagesUrl.length < 5">
                   <button
                     class="btn btn-outline-primary btn-sm d-block w-100"
@@ -329,6 +322,7 @@ import * as bootstrap from "bootstrap";
 import pagination from "../../components/PaginationComponent.vue";
 
 export default {
+  props: ["checkAdmin"],
   data() {
     return {
       products: [],
@@ -434,6 +428,7 @@ export default {
     },
   },
   mounted() {
+    this.checkAdmin();
     this.getProducts();
     //btn 新增產品
     productModal = new bootstrap.Modal(document.getElementById("productModal"));

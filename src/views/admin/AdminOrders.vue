@@ -57,7 +57,11 @@
             >
               檢視
             </button>
-            <button type="button" class="btn btn-outline-danger btn-sm">
+            <button
+              type="button"
+              class="btn btn-outline-danger btn-sm"
+              @click="deleteOrder(order)"
+            >
               刪除
             </button>
           </div>
@@ -94,22 +98,22 @@
                 <tbody>
                   <tr>
                     <th>姓名</th>
-                    <td>{{ tempOrder.user.name }}</td>
+                    <td>{{ tempOrder?.user?.name }}</td>
                   </tr>
 
                   <tr>
                     <th>Email</th>
-                    <td>{{ tempOrder.user.email }}</td>
+                    <td>{{ tempOrder?.user?.email }}</td>
                   </tr>
 
                   <tr>
                     <th>地址</th>
-                    <td>{{ tempOrder.user.address }}</td>
+                    <td>{{ tempOrder?.user?.address }}</td>
                   </tr>
 
                   <tr>
                     <th>電話</th>
-                    <td>{{ tempOrder.user.tel }}</td>
+                    <td>{{ tempOrder?.user?.tel }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -219,6 +223,7 @@ import pagination from "../../components/PaginationComponent.vue";
 
 let orderModal = null;
 export default {
+  props: ["checkAdmin"],
   data() {
     return {
       orders: [],
@@ -231,28 +236,6 @@ export default {
     pagination,
   },
   methods: {
-    checkAdmin() {
-      // 取得token
-      const token = document.cookie.replace(
-        /(?:(?:^|.*;\s*)userToken\s*=\s*([^;]*).*$)|^.*$/,
-        "$1"
-      );
-      this.$http.defaults.headers.common.Authorization = token;
-      this.$http
-        .post(`${VITE_API_URL}/api/user/check`)
-        .then((res) => {
-          this.getOrders();
-          console.log(res);
-          if (!res.data.success) {
-            this.$router.push("/login");
-          }
-        })
-        .catch((err) => {
-          alert(err.response.data.message);
-          // console.log(err.response.data.message)
-          this.$router.push("/login");
-        });
-    },
     getOrders(page = 1) {
       this.isLoading = true;
       this.$http
@@ -262,11 +245,11 @@ export default {
           this.page = res.data.pagination;
           // console.log(res);
           this.isLoading = false;
-          //console.log(res.data.orders);
+          console.log(res.data.orders);
         })
         .catch((err) => {
           this.isLoading = true;
-          alert(err.response);
+          alert(err.response.data.message);
         });
     },
     openOrderModal(order) {
@@ -292,10 +275,25 @@ export default {
           // console.log(err);
         });
     },
+    deleteOrder(order) {
+      this.isLoading = true;
+      this.$http
+        .delete(`${VITE_API_URL}/api/${VITE_API_PATH}/admin/order/${order.id}`)
+        .then((res) => {
+          this.isLoading = false;
+          alert(res.data.message);
+          location.reload();
+          //console.log(res.data.message);
+        })
+        .catch((err) => {
+          this.isLoading = true;
+          alert(err.response.data.message);
+        });
+    },
   },
   mounted() {
-    // this.getOrders();
     this.checkAdmin();
+    this.getOrders();
     orderModal = new bootstrap.Modal(document.getElementById("orderModal"));
   },
 };

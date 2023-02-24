@@ -42,7 +42,7 @@
       </div>
     </nav>
     <div class="container py-5">
-      <router-view></router-view>
+      <router-view :check-admin="checkAdmin"></router-view>
     </div>
   </div>
 </template>
@@ -59,6 +59,7 @@ export default {
         // eslint-disable-next-line no-unused-vars
         .then((res) => {
           document.cookie = `userToken="" ;expires="" ; path=/`;
+          alert("已登出");
           this.$router.push("/");
         })
         .catch((err) => {
@@ -66,7 +67,6 @@ export default {
         });
     },
     checkAdmin() {
-      // 取得token
       const token = document.cookie.replace(
         /(?:(?:^|.*;\s*)userToken\s*=\s*([^;]*).*$)|^.*$/,
         "$1"
@@ -75,7 +75,7 @@ export default {
       this.$http
         .post(`${VITE_API_URL}/api/user/check`)
         .then((res) => {
-          // this.getProduct()
+          //alert(res.data);
           console.log(res);
           if (!res.data.success) {
             this.$router.push("/login");
@@ -83,7 +83,6 @@ export default {
         })
         .catch((err) => {
           alert(err.response.data.message);
-          // console.log(err.response.data.message)
           this.$router.push("/login");
         });
     },

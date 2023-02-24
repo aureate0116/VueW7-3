@@ -223,12 +223,8 @@ export default {
         })
         .then((res) => {
           alert(`送出訂單! ${res.data.message}`);
-          this.user.name = "";
-          this.user.email = "";
-          this.user.phone = "";
-          this.user.address = "";
-          this.user.message = "";
           this.clearCart();
+          location.reload();
         });
     },
     isPhone(value) {

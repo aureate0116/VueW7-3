@@ -5,6 +5,7 @@ import VueAxios from "vue-axios";
 import "./assets/all.scss";
 import App from "./App.vue";
 import router from "./router";
+// import "bootstrap"; // bootstrap 的 JS
 
 import { Form, Field, ErrorMessage, defineRule, configure } from "vee-validate";
 import AllRules from "@vee-validate/rules";

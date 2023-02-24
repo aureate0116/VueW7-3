@@ -50,9 +50,6 @@ export default {
   },
   methods: {
     login() {
-      // this.user.username = document.querySelector('#username').value;
-      // this.user.password = document.querySelector('#password').value;
-      // console.log(`${apiUrl}/admin/signin`);
       this.$http
         .post(`${VITE_API_URL}/admin/signin`, this.user)
         .then((res) => {
@@ -64,8 +61,6 @@ export default {
           document.cookie = `userToken=${token};expires=${new Date(
             expired
           )}; path=/`;
-          // this.checkAdmin();
-          // window.location = 'products.html'
           this.$router.push("/admin/products");
         })
         .catch((err) => {
