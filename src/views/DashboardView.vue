@@ -54,8 +54,16 @@ const { VITE_API_URL } = import.meta.env;
 export default {
   methods: {
     logout() {
-      document.cookie = `userToken= ;expires=${new Date()}; path=/`;
-      this.$router.push("/");
+      this.$http
+        .post(`${VITE_API_URL}/logout`)
+        // eslint-disable-next-line no-unused-vars
+        .then((res) => {
+          document.cookie = `userToken="" ;expires="" ; path=/`;
+          this.$router.push("/");
+        })
+        .catch((err) => {
+          alert(err.response.data.message);
+        });
     },
     checkAdmin() {
       // 取得token

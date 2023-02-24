@@ -1,5 +1,5 @@
 <template>
-  購物車
+  <h3 class="fw-bold">購物車</h3>
   <table class="table align-middle">
     <thead>
       <tr>
@@ -64,7 +64,7 @@
   </table>
 
   <!-- 收件人資料 -->
-  <!-- <div class="my-5 row justify-content-center">
+  <div class="my-5 row justify-content-center">
     <v-form ref="form" class="col-md-6" v-slot="{ errors }" @submit="onSubmit">
       <div class="mb-3">
         <label for="email" class="form-label">Email</label>
@@ -140,7 +140,7 @@
         <button type="submit" class="btn btn-danger">送出訂單</button>
       </div>
     </v-form>
-  </div> -->
+  </div>
 </template>
 
 <script>
@@ -150,15 +150,15 @@ export default {
   data() {
     return {
       cart: {},
-      form: {
-        user: {
-          name: "",
-          email: "",
-          tel: "",
-          address: "",
-        },
-        message: "",
-      },
+      // form: {
+      //   user: {
+      //     name: "",
+      //     email: "",
+      //     tel: "",
+      //     address: "",
+      //   },
+      //   message: "",
+      // },
       user: {},
     };
   },
@@ -209,7 +209,31 @@ export default {
         });
     },
     onSubmit() {
-      console.log("submit");
+      this.$http
+        .post(`${VITE_API_URL}/api/${VITE_API_PATH}/order`, {
+          data: {
+            user: {
+              name: this.user.name,
+              email: this.user.email,
+              tel: this.user.phone,
+              address: this.user.address,
+            },
+            message: this.user.message,
+          },
+        })
+        .then((res) => {
+          alert(`送出訂單! ${res.data.message}`);
+          this.user.name = "";
+          this.user.email = "";
+          this.user.phone = "";
+          this.user.address = "";
+          this.user.message = "";
+          this.clearCart();
+        });
+    },
+    isPhone(value) {
+      const phoneNumber = /^(09)[0-9]{8}$/;
+      return phoneNumber.test(value) ? true : "需要正確的電話號碼";
     },
   },
   mounted() {

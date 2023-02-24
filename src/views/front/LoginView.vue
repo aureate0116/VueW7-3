@@ -25,8 +25,6 @@
         />
         <label for="password">Password</label>
       </div>
-      <!-- v-on:click="login"  -->
-      <!-- @click.prevent="login" -->
       <button
         @click.prevent="login"
         class="btn btn-lg btn-primary w-100 mt-3"
@@ -71,11 +69,7 @@ export default {
           this.$router.push("/admin/products");
         })
         .catch((err) => {
-          // alert(err.data);
-          alert(err.data.message);
-          // console.log(err.data.message);
-          // console.log(username.value);
-          // console.log(password.value);
+          alert(err.response.data.message);
         });
     },
   },

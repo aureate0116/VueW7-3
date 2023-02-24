@@ -1,4 +1,6 @@
 <template>
+  <Loading :active="isLoading" :z-index="1060"></Loading>
+
   <div class="container">
     <h3 class="fw-bold">後台產品列表</h3>
     <div class="text-end mt-4">
@@ -334,6 +336,7 @@ export default {
       tempProduct: {
         imagesUrl: [],
       },
+      isLoading: false,
       page: {}, // 用變數決定現在要帶第幾頁
     };
   },
@@ -342,11 +345,18 @@ export default {
   },
   methods: {
     getProducts(page = 1) {
+      this.isLoading = true;
       this.$http
         .get(`${VITE_API_URL}/api/${VITE_API_PATH}/admin/products?page=${page}`)
         .then((res) => {
           this.products = res.data.products;
           this.page = res.data.pagination;
+          this.isLoading = false;
+        })
+        .catch((err) => {
+          this.isLoading = false;
+          console.log(err);
+          alert(err.response.data.message);
         });
     },
     openModal(type, product) {
@@ -379,7 +389,7 @@ export default {
             this.getProducts();
           })
           .catch((err) => {
-            alert(err.data.message);
+            alert(err.response.data.message);
           });
       } else {
         this.$http
@@ -396,11 +406,12 @@ export default {
           })
           .catch((err) => {
             //alert(err.response.data.message);
-            alert(err.data.message);
+            alert(err.response.data.message);
           });
       }
     },
     deleteProduct() {
+      this.isLoading = true;
       this.$http
         .delete(
           `${VITE_API_URL}/api/${VITE_API_PATH}/admin/product/${this.tempProduct.id}`
@@ -409,9 +420,11 @@ export default {
           alert(res.data.message);
           delProductModal.hide();
           this.getProducts();
+          //this.isLoading = false;
         })
         .catch((err) => {
-          alert(err.data.message);
+          //this.isLoading = false;
+          alert(err.response.data.message);
         });
     },
     createImgs() {

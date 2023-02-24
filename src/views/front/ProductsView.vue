@@ -54,6 +54,7 @@
     </tbody>
   </table>
 
+  <!-- Model -->
   <div
     id="productModal"
     ref="productModal"
